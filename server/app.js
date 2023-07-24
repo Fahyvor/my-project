@@ -27,7 +27,7 @@ async function connectToMongoDB() {
 
     const database = client.db('MyProject');
 
-    await app.listen(port, () => {
+    app.listen(port, () => {
         console.log(`Connected on port ${port}`)
     });
     
