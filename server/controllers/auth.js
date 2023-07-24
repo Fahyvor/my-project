@@ -2,8 +2,8 @@ const User = require('../models/User')
 
 
 const register = async (req, res) => {
-    // const user = await User.create
-    // res.status(400).json({user: {name: user.name}, token })
+    const user = await User.create
+    res.status(400).json({user: {name: user.name} })
     res.send('Registration Successful')
     res.send(req.body)
 }
