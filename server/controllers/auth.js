@@ -8,10 +8,10 @@ const register = async (req, res) => {
     res.send(req.body)
 }
 
-const login = (req, res) => {
+const login = async (req, res) => {
     const { accountNo, password } = req.body
 
-    // const user = await User.findOne({accountNo});
+    const user = await User.findOne({accountNo});
 
     // compare password
     if(!accountNo) {
