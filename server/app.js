@@ -3,18 +3,19 @@ const app = express();
 const connectDB = require('./db/connect');
 require('dotenv').config()
 
+app.use(express.json())
 
 const authRouter = require('./routes/auth');
+const createAccount = require('./routes/create-account')
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/auth', createAccount)
 
 app.get('/', (req,res) => {
     res.send('server')
 })
 
 const port = process.env.PORT || 6000;
-
-const uri = process.env.MONGO_URI;
 
 const start = async () => {
   try {
@@ -28,3 +29,7 @@ const start = async () => {
 };
 
 start();
+
+// app.listen(port, () =>
+//       console.log(`Server is listening on port ${port}...`)
+// );

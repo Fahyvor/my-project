@@ -4,21 +4,12 @@ const bcrypt = require('bcryptjs')
 const UserSchema = new mongoose.Schema({
     firstname: {
         type:String,
-        required:[true, 'Please provide first name'],
-        minlength:3,
-        maxlength:50,
     },
     lastname: {
         type:String,
-        required:[true, 'Please provide last name'],
-        minlength:3,
-        maxlength:50,
     },
     middlename: {
         type:String,
-        required:[true, 'Please provide last name'],
-        minlength:3,
-        maxlength:50,
     },
     username: {
         type:String,
@@ -27,9 +18,7 @@ const UserSchema = new mongoose.Schema({
     },
     phone: {
         type:String,
-        required:[true, 'Please provide phone number'],
-        minlength:3,
-        maxlength:11,
+
     },
     email: {
         type:String,
@@ -63,11 +52,22 @@ const UserSchema = new mongoose.Schema({
     },
 })
 
-UserSchema.pre('save', async function(next){
+// UserSchema.pre('save', async function(next){
+//     if(!this.isModified('password')) {
+//         return next();
+//     }
+    
+//     const salt = await bcrypt.genSalt(10);
+//     this.PIN = await bcrypt.hash(this.PIN, salt);
+//     this.password = await bcrypt.hash(this.password, salt);
+//     this.confirmPassword = await bcrypt.hash(this.confirmPassword, salt);
+// })
+UserSchema.pre('save', async function (next) {
+    if(!this.isModified('password')){
+        next();
+    }
     const salt = await bcrypt.genSalt(10);
-    this.PIN = await bcrypt.hash(this.PIN, salt);
-    this.password = await bcrypt.hash(this.password, salt);
-    this.confirmPassword = await bcrypt.hash(this.confirmPassword, salt);
+    this.password = await bcrypt.hash(this.password, salt)
 })
 
 UserSchema.methods.createJWT = function() {
