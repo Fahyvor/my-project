@@ -6,12 +6,10 @@ require('dotenv').config()
 app.use(express.json())
 
 const authRouter = require('./routes/auth');
-const createAccount = require('./routes/create-account')
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/auth', createAccount)
 
-app.get('/', (req,res) => {
+app.use('/', (req,res) => {
     res.send('server')
 })
 

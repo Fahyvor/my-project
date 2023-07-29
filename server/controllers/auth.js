@@ -5,8 +5,6 @@ const app = express()
 app.use(express.json())
 
 const register = async (req, res) => {
-    // const user = User.create(req.body);
-    // res.status(200).json({ user });
     try {
         const {
             firstname,
@@ -21,7 +19,7 @@ const register = async (req, res) => {
             confirmPassword
         } = req.body;
 
-        if (!firstname || !lastname || !middlename || !phone || !email || !address || !PIN || !password || !confirmPassword) {
+        if (!firstname || !lastname || !middlename ||!username || !phone || !email || !address || !PIN || !password || !confirmPassword) {
             return res.status(400).json({ error: 'Please provide all required fields.' });
         }
 
@@ -44,19 +42,29 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    const { accountNo, password } = req.body
+    const { username, password } = req.body
 
-    const user = await User.findOne({accountNo});
+    const user = await User.findOne({username});
 
-    // compare password
-    if(!accountNo) {
-        throw new ('Invalid login details');
+    try {
+        if(!accountNo) {
+            throw new ('Invalid login details');
+        }
+    
+        if( !accountNo || !password ) {
+            throw new ('Please provide Account number and Password')
+        }
+
+        // compare password
+
+
+        res.status(400).json('Login Successful')
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'An error occurred during registration.' });
     }
-
-    if( accountNo || password ) {
-        throw new ('Please provide Account number and Password')
-    }
-    res.status(400).json('Login Successful')
+    
 }
 
 module.exports = {
