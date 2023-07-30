@@ -47,16 +47,18 @@ const login = async (req, res) => {
     const user = await User.findOne({username});
 
     try {
-        if(!accountNo) {
+        if(!username) {
             throw new ('Invalid login details');
         }
     
-        if( !accountNo || !password ) {
+        if( !username || !password ) {
             throw new ('Please provide Account number and Password')
         }
 
         // compare password
-
+        if( password !== User.password) {
+            throw new('Incorrect password')
+        }
 
         res.status(400).json('Login Successful')
 
@@ -71,5 +73,3 @@ module.exports = {
     register,
     login
 }
-
-// https://nigerianbanks.xyz/
