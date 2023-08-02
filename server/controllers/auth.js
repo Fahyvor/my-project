@@ -23,6 +23,7 @@ const register = async (req, res) => {
             return res.status(400).json({ error: 'Please provide all required fields.' });
         }
 
+
         // Check if a user with the same email already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
