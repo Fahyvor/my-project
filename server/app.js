@@ -7,14 +7,21 @@ require('dotenv').config();
 app.use(express.json());
 
 // Allow cross-origin requests from http://localhost:3000
+app.use((req, res, next) => {
+  console.log('Received request from:', req.headers.origin);
+  next();
+});
+
+// The existing CORS middleware comes here
 app.use(cors({
   credentials: true,
   origin: 'http://localhost:3000'
 }));
 
+
 const authRouter = require('./routes/auth');
 
-app.use('/api/v1/auth', authRouter);
+app.use('/api', authRouter);
 
 app.use('/', (req, res) => {
   res.send('server');
