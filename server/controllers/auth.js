@@ -61,7 +61,7 @@ const login = async (req, res) => {
             throw new('Incorrect password')
         }
 
-        res.status(400).json('Login Successful')
+        res.status(400).json('Logged in Successfully')
 
     } catch (error) {
         console.log(error)
