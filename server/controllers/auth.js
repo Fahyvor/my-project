@@ -43,32 +43,37 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    const { username, password } = req.body
-
-    const user = await User.findOne({username});
+    const { username, password } = req.body;
 
     try {
-        if(!username) {
-            throw new ('Invalid login details');
-        }
-    
-        if( !username || !password ) {
-            throw new ('Please provide Account number and Password')
+        // Check if both username and password are provided
+        if (!username || !password) {
+            throw new Error('Please provide username and password');
         }
 
-        // compare password
-        if( password !== User.password) {
-            throw new('Incorrect password')
+        // Find the user by username
+        const user = await User.findOne({ username });
+
+        // Check if the user exists
+        if (!user) {
+            throw new Error('Invalid login details');
         }
 
-        res.status(400).json('Logged in Successfully')
+        // Compare the password using user's stored password hash
+        const isPasswordValid = await user.comparePassword(password);
+
+        if (!isPasswordValid) {
+            throw new Error('Incorrect password');
+        }
+
+        // Successful login
+        res.status(200).json({ message: 'Logged in successfully' });
 
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: 'An error occurred during registration.' });
+        console.error(error);
+        res.status(400).json({ error: error.message });
     }
-    
-}
+};
 
 
 module.exports = {
