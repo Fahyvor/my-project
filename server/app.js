@@ -5,6 +5,7 @@ const connectDB = require('./db/connect');
 require('dotenv').config();
 
 app.use(express.json());
+app.use(cors());
 
 // Allow cross-origin requests from http://localhost:3000
 app.use((req, res, next) => {
@@ -12,19 +13,19 @@ app.use((req, res, next) => {
   next();
 });
 
-// The existing CORS middleware comes here
-app.use(cors({
-  credentials: true,
-  origin: 'http://localhost:3000'
-}));
+
 
 
 const authRouter = require('./routes/auth');
 
 app.use('/api', authRouter);
 
-app.use('/', (req, res) => {
-  // res.json(req.body);
+app.post('/api', (req, res) => {
+  res.json(req.body)
+})
+
+app.get('/', (req, res) => {
+  res.json(req.body);
   res.send('server');
 });
 
